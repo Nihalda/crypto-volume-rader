@@ -8,7 +8,6 @@ st.set_page_config(page_title="Crypto Volume Radar", page_icon="📈", layout="w
 st.title("📊 Crypto Volume Radar")
 st.markdown("Track top 20 coins by 24h trading volume — updates every 60 seconds")
 
-# Function to fetch crypto data
 def fetch_crypto_data():
     try:
         url = "https://api.coingecko.com/api/v3/coins/markets"
@@ -21,6 +20,11 @@ def fetch_crypto_data():
         }
         response = requests.get(url, params=params)
         data = response.json()
+
+        # ✅ Check if response is valid
+        if not isinstance(data, list):
+            st.warning("⚠ API returned unexpected data. Please try again in a few seconds.")
+            return pd.DataFrame()
 
         coins = []
         for coin in data:
@@ -51,14 +55,20 @@ def fetch_crypto_data():
         st.error(f"Error fetching data: {e}")
         return pd.DataFrame()
 
-# Show data
+# Load data
 df = fetch_crypto_data()
+
+if df.empty:
+    st.stop()
+
+# Show data
 st.dataframe(df, use_container_width=True)
 st.caption("🔁 Auto-refreshing every 60 seconds — powered by CoinGecko API")
 
-# Refresh button
-st.button("Refresh Now")
+# Add manual refresh button
+if st.button("Refresh Now"):
+    st.experimental_rerun()
 
-# Auto-refresh every 60 seconds (Streamlit Cloud safe)
-st.experimental_rerun()
+# Auto-refresh every 60s (safe)
 time.sleep(60)
+st.experimental_rerun()
