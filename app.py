@@ -89,7 +89,7 @@ if isinstance(sparkline, list) and len(sparkline) > 0:
     )
     st.plotly_chart(fig, use_container_width=True)
 else:
-    st.info("⚠ No 7-day chart data available for this coin."
+    st.info("⚠ No 7-day chart data available for this coin.")
 # Manual refresh
 if st.button("🔄 Refresh Now"):
     st.experimental_rerun()
