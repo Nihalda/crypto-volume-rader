@@ -8,9 +8,6 @@ st.set_page_config(page_title="Crypto Volume Radar", page_icon="📈", layout="w
 st.title("📊 Crypto Volume Radar")
 st.markdown("Track top 20 coins by 24h trading volume — updates every 60 seconds")
 
-# Placeholder for data
-placeholder = st.empty()
-
 # Function to fetch crypto data
 def fetch_crypto_data():
     try:
@@ -54,16 +51,14 @@ def fetch_crypto_data():
         st.error(f"Error fetching data: {e}")
         return pd.DataFrame()
 
-# Countdown + auto-refresh
-countdown = st.empty()
+# Show data
+df = fetch_crypto_data()
+st.dataframe(df, use_container_width=True)
+st.caption("🔁 Auto-refreshing every 60 seconds — powered by CoinGecko API")
 
-while True:
-    df = fetch_crypto_data()
+# Refresh button
+st.button("Refresh Now")
 
-    with placeholder.container():
-        st.dataframe(df, use_container_width=True)
-        st.caption("🔁 Auto-refreshing every 60 seconds — powered by CoinGecko API")
-
-    for seconds_left in range(60, 0, -1):
-        countdown.info(f"Next update in ⏳ {seconds_left} seconds")
-        time.sleep(1)
+# Auto-refresh every 60 seconds (Streamlit Cloud safe)
+st.experimental_rerun()
+time.sleep(60)
