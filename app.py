@@ -74,7 +74,7 @@ coin_data = df[df["Coin"] == selected_coin].iloc[0]
 sparkline = coin_data["Sparkline"]
 
 # Chart for the selected coin
-if sparkline:
+if isinstance(sparkline, list) and len(sparkline) > 0:
     fig = go.Figure()
     fig.add_trace(go.Scatter(
         y=sparkline,
@@ -91,7 +91,8 @@ if sparkline:
     )
     st.plotly_chart(fig, use_container_width=True)
 else:
-    st.info("No chart data available for this coin.")
+    st.info("⚠ No 7-day chart data available for this coin."
+        
 
 # Manual refresh
 if st.button("🔄 Refresh Now"):
