@@ -69,10 +69,8 @@ st.caption("🔁 Auto-refreshes every 60 seconds — powered by CoinGecko API")
 
 # Select coin to view chart
 selected_coin = st.selectbox("📈 Choose a coin to view 7-day trend:", df["Coin"])
-
 coin_data = df[df["Coin"] == selected_coin].iloc[0]
 sparkline = coin_data["Sparkline"]
-
 # Chart for the selected coin
 if isinstance(sparkline, list) and len(sparkline) > 0:
     fig = go.Figure()
@@ -92,12 +90,9 @@ if isinstance(sparkline, list) and len(sparkline) > 0:
     st.plotly_chart(fig, use_container_width=True)
 else:
     st.info("⚠ No 7-day chart data available for this coin."
-        
-
 # Manual refresh
 if st.button("🔄 Refresh Now"):
     st.experimental_rerun()
-
 # Auto-refresh every 60s
 time.sleep(60)
 st.experimental_rerun()
